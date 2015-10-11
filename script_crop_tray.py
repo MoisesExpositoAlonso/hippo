@@ -7,13 +7,14 @@
 
 from script_image_processing import *
 from moi import *
-
+import sys
 
 ### Read image
 
 # filename='ara.jpg'
 # filename='araqr.jpg'
-filename='P1000363.JPG'
+# filename='P1000363.JPG'
+filename=sys.argv[1]
 im=readcolimage(filename)
 type(im)
 height, width, channels = im.shape
@@ -46,10 +47,14 @@ for r in rows:
     continue
    if str(t[0]) == r and float (t[1]) ==float(c):
     # print t[2:6]
-    x1= int(t[2]) -20
-    x2= int(t[3]) +20
-    y1= int(t[4]) -20
-    y2= int(t[5]) +20
+    # x1= int(t[2]) -20
+    # x2= int(t[3]) +20
+    # y1= int(t[4]) -20
+    # y2= int(t[5]) +20
+    x1= int(t[2]) 
+    x2= int(t[3]) 
+    y1= int(t[4]) 
+    y2= int(t[5]) 
     print [x1,x2,y1,y2]
     cropim=crop(im,x1=x1,x2=x2,y1=y1,y2=y2)
     saveimage(name=nameout,image=cropim) 
