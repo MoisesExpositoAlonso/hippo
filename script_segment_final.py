@@ -6,10 +6,9 @@ import os
 
 # filename=sys.argv[1]
 # filename="P1000941_C1.png"
-filename='P1000363_E5.jpeg'
+# filename='P1000363_E5.jpeg'
 # filename='P1000941_C1.jpeg'
-
-# filename=sys.argv[1]
+filename=sys.argv[1]
 
 nameroot =filename.split(".")[0]
 cwd=os.getcwd()

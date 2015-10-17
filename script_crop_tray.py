@@ -9,19 +9,18 @@ from script_image_processing import *
 from moi import *
 import sys
 
-### Read image
+# 1 ## Read image
 
-# filename='ara.jpg'
-# filename='araqr.jpg'
-# filename='P1000363.JPG'
 filename=sys.argv[1]
+newname=sys.argv[2]
+
 im=readcolimage(filename)
-type(im)
-height, width, channels = im.shape
-print height, width, channels
+# type(im)
+# height, width, channels = im.shape
+# print height, width, channels
 
 
-## get the index of pot positions
+# 2 ## get the index of pot positions
 
 fileindex="index_pots_pertray.tsv"
 # print fileindex
@@ -30,18 +29,19 @@ fileindex="index_pots_pertray.tsv"
 # print indexpots
 
 table=readtabtable(filename=fileindex)
-print table
+# print table
 
 
 rows= ["A", "B",  "C",  "D", "E"] 
 columns=[1,2,3,4,5,6,7,8]
 
+# 3 ## crop and save
 
 for r in rows:
  for c in columns:
   # if str(r)+str(c) any 
-  print str(r)+str(c)
-  nameout =filename[:-4] +"_" +str(r)+str(c)
+  # print str(r)+str(c)
+  nameout =newname +"_" +str(r)+str(c)
   for t in table:
    if "row" in t:
     continue
@@ -55,6 +55,6 @@ for r in rows:
     x2= int(t[3]) 
     y1= int(t[4]) 
     y2= int(t[5]) 
-    print [x1,x2,y1,y2]
+    # print [x1,x2,y1,y2]
     cropim=crop(im,x1=x1,x2=x2,y1=y1,y2=y2)
-    saveimage(name=nameout,image=cropim) 
+    saveimage(name=nameout+".jpeg",image=cropim) 

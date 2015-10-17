@@ -66,11 +66,18 @@ def display(image):
 
 
 
-def saveimage(name,image):
+def saveimage(image,name="unknown"):
 #''' saves it in the current directory '''
- directory=os.curdir
- cv2.imwrite(os.curdir+'/'+name+'.jpeg', image)
+ # directory=os.curdir
+ # cv2.imwrite(os.curdir+'/'+name+'.jpeg', image)
+ cv2.imwrite(name, image)
 
+
+def saveimage(image,name="unknown"):
+#''' saves it in the current directory '''
+ # directory=os.curdir
+ cv2.imwrite(os.curdir+'/'+name+'.jpeg', image)
+ # cv2.imwrite(name, image)
 
 ##############################################################################
 
@@ -287,7 +294,7 @@ def maskhsvdenoise(img):
 
 	result = cv2.bitwise_and(img,img, mask= h_mask)
 	result = cv2.bitwise_and(result,result, mask= s_mask)
-	# result = cv2.bitwise_and(result,result, mask= v_mask)
+	result = cv2.bitwise_and(result,result, mask= v_mask)
 	return(result)
 
 
