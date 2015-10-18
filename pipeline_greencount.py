@@ -1,5 +1,5 @@
 from script_image_processing import *
-from moi import *
+# from moi import *
 import sys
 import os
 from subprocess import *

@@ -6,7 +6,7 @@
 # import moi
 
 from script_image_processing import *
-from moi import *
+# from moi import *
 import sys
 
 # 1 ## Read image
