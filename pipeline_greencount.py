@@ -10,8 +10,8 @@ from subprocess import *
 # outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
 # infolder="/Users/moisesexpositoalonso/image1001g"
 
-outfolder=sys.argv(1)
-infolder=sys.argv(2)
+outfolder=sys.argv[1]
+infolder=sys.argv[2]
 
 workingfolder=os.getcwd()
 
