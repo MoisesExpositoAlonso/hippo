@@ -36,7 +36,7 @@ for fil in filesimage:
 
 	mytime=time.ctime(os.path.getctime(fil))
 	mytime=mytime.split(" ")
-	listposition=[1,3,5]
+	listposition=[1,2,4]
 	finaltime=[x[1] for x in enumerate(mytime) if x[0] in listposition]
 	timestring=finaltime[2]+"-"+finaltime[0]+"-"+finaltime[1]
 
