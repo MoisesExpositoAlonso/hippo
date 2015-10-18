@@ -1,0 +1,17 @@
+# From conversation with George
+
+sobel - edge detection
+http://de.mathworks.com/help/images/ref/edge.html
+
+erode - blur?
+http://de.mathworks.com/help/images/ref/imerode.html
+
+
+dilute
+
+image function list for matlab --> morphological operations
+http://de.mathworks.com/help/images/functionlist.html
+
+
+morphological transformation in opencv
+http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html

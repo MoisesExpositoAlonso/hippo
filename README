@@ -1,4 +1,13 @@
 ## This is a project on image analysis of the 1001g ##
 # If I make to work git, this will be the place with all python script for image processing and analysis #
 
-:
+There are several scripts connected through the pipeline script. The steps are:
+### Scheme of pipeline ###
+# read all images in a directory
+	# get the date of the file
+	# load the index of the trays
+# crop and save all pot images with the date, original image name and coordinates of pot
+	# number of images is 49trays * 40pots * 20timepictures = 39200 pictures to analyze, then better to parallelize
+# segment all images
+	# append in to a single file with photo number, date and location
+

@@ -1,9 +1,9 @@
 from script_image_processing import *
 from moi import *
 
-filename='P1000363_E3_green_minus_blue_&mask_intooriginal.jpeg'
-filename='P1000363_E3_green_minus_blue_&mask.jpeg'
-filename="P1000363_E5_denoised_maskhsv_original.jpeg"
+# filename='P1000363_E3_green_minus_blue_&mask_intooriginal.jpeg'
+# filename='P1000363_E3_green_minus_blue_&mask.jpeg'
+# filename="P1000363_E5_denoised_maskhsv_original.jpeg"
 
 filename="P1000363_E5_segmented6_FINAL.JPEG"
 
