@@ -1,1 +1,4 @@
-/ebio/abt6_projects9/ath_1001G_image_pheno/scripts/P1000363.JPG
+/Users/moisesexpositoalonso/image1001g/P1000363.JPG
+/Users/moisesexpositoalonso/image1001g/P1000941.JPG
+/Users/moisesexpositoalonso/image1001g/P1010073.JPG
+/Users/moisesexpositoalonso/image1001g/P1010084.JPG
