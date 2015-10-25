@@ -19,8 +19,8 @@ infolder='/ebio/abt6_projects9/ath_1001G_image_pheno/scripts'
 outfolder='/ebio/abt6_projects9/ath_1001G_image_pheno/tmp'
 
 
-print "reading from ", infolder
-print "writing to ",outfolder
+# print "reading from ", infolder
+# print "writing to ",outfolder
 
 
 
@@ -29,7 +29,7 @@ workingfolder=os.getcwd()
 ############################## PARSE JPG FILES #############################
 ### Find all the JPG files in a folder
 command="find " +infolder+"/"+ "*.JPG >" +outfolder+"/"+"images_to_analyze.txt"
-print command
+# print command
 call(command,shell=True)
 
 images_to_analyze=open(outfolder+"/"+"images_to_analyze.txt","r")
@@ -56,11 +56,11 @@ for fil in filesimage:
 	### Create the new name including root of picture date of creation
 
 	nameroot =fil.split("/")[-1].split(".")[0]
-	print "this is nameroot ",nameroot
+	# print "this is nameroot ",nameroot
 	newroot=timestring+"_"+nameroot
 	outname=outfolder+"/"+newroot 
 	# print newroot # example 2015_Oct_5_P1000363_A4.jpeg
-	print "this is outname",outname
+	# print "this is outname",outname
 	
 	### send a job of cropping
 	cmd="python script_crop_tray.py"+" "+fil + " " +outname
@@ -77,8 +77,6 @@ call(command,shell=True,cwd=outfolder)
 images_to_countgreen=open(outfolder+"/"+"images_to_countgreen.txt","r")
 files_to_countgreen=[x.replace("\n","") for x in images_to_countgreen]
 
-outcount=open(outfolder+"/"+"results_pipeline_greencount.csv","w")
-listoutcount=[["date","imagename","position","greencount"]]
 
 for filename in files_to_countgreen:
 	# filename=files_to_countgreen[0]
@@ -103,7 +101,16 @@ for filename in files_to_countgreen:
 	# nameout =filename.split("/")[-1].split(".")[0] +"_segmented_binary" 
 	# saveimagejpeg(name=outfolder+"/"+nameout,image=th1)
 
-	countgreen=cv2.countNonZero(maskedhsvdenoisedgray ) # nothe the conversion into gray values
+
+
+
+############################## count pixels  #############################
+
+# NEED TO ADJUST THIS TO MAKE IT PARALLEL
+
+listoutcount=[["date","imagename","position","greencount"]]
+
+countgreen=cv2.countNonZero(maskedhsvdenoisedgray ) # nothe the conversion into gray values
 	countbinary=cv2.countNonZero(th1) 
 
 	splitfile=filename.split("/")[-1]
@@ -114,12 +121,12 @@ for filename in files_to_countgreen:
 
 
 	towrite=[filedate,photoname,traypos,str(countbinary),str(countgreen)]
-	print towrite
+	# print towrite
 	listoutcount.append(towrite)
 
+############################## create a csv file with the analyzed data #############################
 
-
-# print listoutcount
+outcount=open(outfolder+"/"+"results_pipeline_greencount.csv","w")
 
 for line in listoutcount:
 	outcount.write(str(','.join(line))+"\n")

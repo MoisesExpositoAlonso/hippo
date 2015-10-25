@@ -57,4 +57,5 @@ for r in rows:
     y2= int(t[5]) 
     # print [x1,x2,y1,y2]
     cropim=crop(im,x1=x1,x2=x2,y1=y1,y2=y2)
+    # print nameout
     saveimage(name=nameout+".jpeg",image=cropim) 

@@ -32,6 +32,9 @@ def rgb2hsv(image):
  hsv_img = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
  return (hsv_img)
 
+def rgb2gray(image):
+ grayimg = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+ return (grayimg)
 
  # def savehist(histobject,color,filename):
  #    # dictionary = {0:1000, 1:20, 2:15, 3:0, 4:5}
@@ -73,10 +76,10 @@ def saveimage(image,name="unknown"):
  cv2.imwrite(name, image)
 
 
-def saveimage(image,name="unknown"):
+def saveimagejpeg(image,name="unknown"):
 #''' saves it in the current directory '''
  # directory=os.curdir
- cv2.imwrite(os.curdir+'/'+name+'.jpeg', image)
+ cv2.imwrite(name+'.jpeg', image)
  # cv2.imwrite(name, image)
 
 ##############################################################################
