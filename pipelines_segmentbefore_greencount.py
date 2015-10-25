@@ -7,23 +7,33 @@ from subprocess import *
 
 ############################## FOLDER TO WORK #############################
 
-# outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
-# infolder="/Users/moisesexpositoalonso/image1001g"
+outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
+outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
 
-outfolder=sys.argv[1]
-infolder=sys.argv[2]
+infolder="/Users/moisesexpositoalonso/image1001g"
+
+# outfolder=sys.argv[1]
+# outfolder_cropped=sys.argv[1]
+
+# infolder=sys.argv[2]
+
+# tmpfolder=outfolder+"/segmented/"
+# tmpfoldercount=outfolder+"/segmented_cropped/"
+
 
 workingfolder=os.getcwd()
 
-############################## PARSE JPG FILES #############################
-### Find all the JPG files in a folder
+############################## WORK WITH JPG FILES #############################
+### Segment and save image and
+
 command="find " +infolder+"/"+ "*.JPG > images_to_analyze.txt"
 call(command,shell=True)
 
-images_to_analyze=open("images_to_analyze.txt","r")
+images_to_analyze=open(infolder+"/"+"images_to_analyze.txt","r")
 filesimage=[x.replace("\n","") for x in images_to_analyze]
 
-### Read the image and crop
+
+### Read the image 
 
 import os
 import time
@@ -41,7 +51,7 @@ for fil in filesimage:
 	timestring=finaltime[2]+"-"+finaltime[0]+"-"+finaltime[1]
 
 
-	### Create the new name including root of picture date of creation
+### Create the new name including root of picture date of creation
 
 	nameroot =fil.split("/")[-1].split(".")[0]
 	print "this is nameroot ",nameroot
@@ -50,11 +60,23 @@ for fil in filesimage:
 	# print newroot # example 2015_Oct_5_P1000363_A4.jpeg
 	print "this is outname",outname
 	
-	### send a job of cropping
-	cmd="python script_crop_tray.py"+" "+fil + " " +outname
+### segment before cropping
+	
+	img = readcolimage(fil)
+
+	maskedhsv_denoised=maskhsvdenoise(img)
+	nameout =outname +"_segmented" 
+	saveimagejpeg(nameout,maskedhsv_denoised)
+
+	# maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
+	# ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) ### SO FIRST THE NORMAL, THEN I CAN TRY THIS
+
+### send a job of cropping
+	cmd="python script_crop_tray.py"+" "+nameout+"jpeg" + " " +nameout
 	# print cmd
 	p = Popen(cmd, shell=True)
 	p.wait()
+
 
 ############################## analize croped images #############################
  
@@ -70,23 +92,23 @@ listoutcount=[]
 
 for filename in files_to_countgreen:
 	# filename=files_to_countgreen[0]
-	print "to segment... ", filename
+	# print "to segment... ", filename
 	# cmd="python "+ workingfolder + "/"+ "script_segment.py " + filename
 	# p = Popen(cmd, shell=True,cwd=outfolder)
 
-	img = readcolimage(filename)
+	img = readgreyimage(filename)
 
-	maskedhsv_denoised=maskhsvdenoise(img)
-	# nameout =nameroot +"_segmented" 
-	# saveimage(nameout,maskedhsv_denoised)
+	# maskedhsv_denoised=maskhsvdenoise(img)
+	# # nameout =nameroot +"_segmented" 
+	# # saveimage(nameout,maskedhsv_denoised)
 
-	maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
-	ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) 
-	# nameout =filename[:-5] +"_segmented_binary" 
+	# maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
+	# ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) 
+	# # nameout =filename[:-5] +"_segmented_binary" 
 	# saveimage(nameout,th1)
 
 	# countgreen=cv2.countNonZero(maskedhsv_denoised) 
-	countbinary=cv2.countNonZero(th1) 
+	count=cv2.countNonZero(img) 
 
 
 	splitfile=filename.split("_")
@@ -94,7 +116,7 @@ for filename in files_to_countgreen:
 	photoname=splitfile[1]
 	traypos=splitfile[2].split(".")[0]
 
-	towrite=[filedate,photoname,traypos,str(countbinary)]
+	towrite=[filedate,photoname,traypos,str(count)]
 	listoutcount.append(towrite+"\n")
 
 
