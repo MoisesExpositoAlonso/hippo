@@ -12,6 +12,10 @@ outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
 
 infolder="/Users/moisesexpositoalonso/image1001g"
 
+outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
+infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
+
+
 # outfolder=sys.argv[1]
 # outfolder_cropped=sys.argv[1]
 
@@ -49,7 +53,7 @@ for fil in filesimage:
 	listposition=[1,2,4]
 	finaltime=[x[1] for x in enumerate(mytime) if x[0] in listposition]
 	timestring=finaltime[2]+"-"+finaltime[0]+"-"+finaltime[1]
-
+	print timestring
 
 ### Create the new name including root of picture date of creation
 
