@@ -73,11 +73,11 @@ def saveimage(image,name="unknown"):
  cv2.imwrite(name, image)
 
 
-# def saveimage(image,name="unknown"):
+def saveimagejpeg(image,name="unknown"):
 # #''' saves it in the current directory '''
 #  # directory=os.curdir
-#  cv2.imwrite(os.curdir+'/'+name+'.jpeg', image)
-#  # cv2.imwrite(name, image)
+ cv2.imwrite(name+'.jpeg', image)
+ # cv2.imwrite(name, image)
 
 ##############################################################################
 
