@@ -5,7 +5,7 @@
 # import script_image_processing
 # import moi
 
-from script_image_processing import *
+from module_image_processing import *
 from moi import *
 import sys
 

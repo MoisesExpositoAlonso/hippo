@@ -1,4 +1,4 @@
-from script_image_processing import *
+from module_image_processing import *
 from moi import *
 import sys
 import os
@@ -7,12 +7,13 @@ from subprocess import *
 
 ############################## FOLDER TO WORK #############################
 
-outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
-outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
-
-infolder="/Users/moisesexpositoalonso/image1001g"
+#outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
+#outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
+#infolder="/Users/moisesexpositoalonso/image1001g"
 
 outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
+call("mkdir cropped",shell=True,cwd=outfolder)
+outfolder_cropped="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp/cropped"
 infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
 
 
@@ -22,6 +23,7 @@ infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
 # infolder=sys.argv[2]
 
 # tmpfolder=outfolder+"/segmented/"
+
 # tmpfoldercount=outfolder+"/segmented_cropped/"
 
 
@@ -35,7 +37,7 @@ call(command,shell=True)
 
 images_to_analyze=open(infolder+"/"+"images_to_analyze.txt","r")
 filesimage=[x.replace("\n","") for x in images_to_analyze]
-
+print filesimage
 
 ### Read the image 
 
@@ -70,14 +72,16 @@ for fil in filesimage:
 
 	maskedhsv_denoised=maskhsvdenoise(img)
 	nameout =outname +"_segmented" 
-	saveimagejpeg(nameout,maskedhsv_denoised)
+	cv2.imwrite(nameout+".jpeg",maskedhsv_denoised)
+	print "saved image ",nameout+".jpeg"
+	#saveimage(name=nameout,image=maskedhsv_denoised)
 
 	# maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
 	# ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) ### SO FIRST THE NORMAL, THEN I CAN TRY THIS
 
 ### send a job of cropping
-	cmd="python script_crop_tray.py"+" "+nameout+"jpeg" + " " +nameout
-	# print cmd
+	cmd="python script_crop_tray.py"+" "+nameout+".jpeg" + " " +outfolder_cropped+"/"+newroot
+	print "crop command sent: ", cmd
 	p = Popen(cmd, shell=True)
 	p.wait()
 
@@ -85,11 +89,13 @@ for fil in filesimage:
 ############################## analize croped images #############################
  
 
-command="find " +outfolder+"/"+ "*.jpeg > images_to_countgreen.txt"
-call(command,shell=True,cwd=outfolder)
+command="find " +outfolder_cropped+"/"+ "*.jpeg > images_to_countgreen.txt"
+call(command,shell=True,cwd=outfolder_cropped)
 
-images_to_countgreen=open(outfolder+"/"+"images_to_countgreen.txt","r")
+images_to_countgreen=open(outfolder_cropped+"/"+"images_to_countgreen.txt","r")
 files_to_countgreen=[x.replace("\n","") for x in images_to_countgreen]
+print "counting pixels of: ", files_to_countgreen
+
 
 outcount=open(outfolder+"/"+"results_pipeline_greencount.csv","w")
 listoutcount=[]
@@ -114,20 +120,21 @@ for filename in files_to_countgreen:
 	# countgreen=cv2.countNonZero(maskedhsv_denoised) 
 	count=cv2.countNonZero(img) 
 
-
-	splitfile=filename.split("_")
-	filedate=splitfile[0].split("/")[-1]
+	
+	splitfile=filename.split("/")[-1]
+	splitfile=splitfile.split("_")
+	filedate=splitfile[0]
 	photoname=splitfile[1]
 	traypos=splitfile[2].split(".")[0]
 
 	towrite=[filedate,photoname,traypos,str(count)]
-	listoutcount.append(towrite+"\n")
+	listoutcount.append(towrite)
 
 
 
 # print listoutcount
 
 for line in listoutcount:
-	outcount.write(str(','.join(line)))
+	outcount.write(str(','.join(line)+"\n"))
 
 outcount.close()
