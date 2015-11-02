@@ -1,4 +1,6 @@
+
 from module_image_processing import *
+
 from moi import *
 import sys
 import os
@@ -7,23 +9,15 @@ from subprocess import *
 
 ############################## FOLDER TO WORK #############################
 
-<<<<<<< HEAD
 outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
+call("mkdir cropped",shell=True,cwd=outfolder)
 outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
 infolder="/Users/moisesexpositoalonso/image1001g"
 
-#outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
-#infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
-=======
-#outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
-#outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
-#infolder="/Users/moisesexpositoalonso/image1001g"
-
-outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
-call("mkdir cropped",shell=True,cwd=outfolder)
-outfolder_cropped="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp/cropped"
-infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
->>>>>>> 93115d7986321489f568a63a3623d793533f35c4
+# outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
+# call("mkdir cropped",shell=True,cwd=outfolder)
+# outfolder_cropped="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp/cropped"
+# infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
 
 
 # outfolder=sys.argv[1]
@@ -35,6 +29,7 @@ infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
 
 # tmpfoldercount=outfolder+"/segmented_cropped/"
 
+removeyesno=sys.argv[1]
 
 workingfolder=os.getcwd()
 
@@ -46,12 +41,14 @@ call(command,shell=True)
 
 images_to_analyze=open(infolder+"/"+"images_to_analyze.txt","r")
 filesimage=[x.replace("\n","") for x in images_to_analyze]
-print filesimage
+#print filesimage
 
 ### Read the image 
 
 import os
 import time
+
+counter=0
 
 for fil in filesimage:
 	print "------------------------------------------------"
@@ -64,7 +61,7 @@ for fil in filesimage:
 	listposition=[1,2,4]
 	finaltime=[x[1] for x in enumerate(mytime) if x[0] in listposition]
 	timestring=finaltime[2]+"-"+finaltime[0]+"-"+finaltime[1]
-	print timestring
+#	print timestring
 
 ### Create the new name including root of picture date of creation
 
@@ -73,26 +70,37 @@ for fil in filesimage:
 	newroot=timestring+"_"+nameroot
 	outname=outfolder+"/"+newroot 
 	# print newroot # example 2015_Oct_5_P1000363_A4.jpeg
-	print "this is outname",outname
+#	print "this is outname",outname
 	
-### segment before cropping
-	
-	img = readcolimage(fil)
+### segment before cropping	
+### send a job of cropping
 
-	maskedhsv_denoised=maskhsvdenoise(img)
-	nameout =outname +"_segmented" 
-	cv2.imwrite(nameout+".jpeg",maskedhsv_denoised)
-	print "saved image ",nameout+".jpeg"
+	#img = readcolimage(fil)
+
+	#maskedhsv_denoised=maskhsvdenoise(img)
+	#nameout =outname +"_segmented" 
+	#cv2.imwrite(nameout+".jpeg",maskedhsv_denoised)
+	#print "saved image ",nameout+".jpeg"
 	#saveimage(name=nameout,image=maskedhsv_denoised)
 
 	# maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
 	# ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) ### SO FIRST THE NORMAL, THEN I CAN TRY THIS
 
-### send a job of cropping
-	cmd="python script_crop_tray.py"+" "+nameout+".jpeg" + " " +outfolder_cropped+"/"+newroot
-	print "crop command sent: ", cmd
+# send segmentation and cropping simultaneously
+
+	cmd="python pipeline_parallel_segmentcrop.py"+ " " + fil + " " +outfolder_cropped+"/"+newroot
+#	print "crop command sent: ", cmd
 	p = Popen(cmd, shell=True)
-	p.wait()
+
+	counter=counter+1
+	
+	if counter == 20:
+		p.wait()
+	else:
+		pass
+
+# out of loop
+p.wait()
 
 
 ############################## analize croped images #############################
@@ -103,7 +111,7 @@ call(command,shell=True,cwd=outfolder_cropped)
 
 images_to_countgreen=open(outfolder_cropped+"/"+"images_to_countgreen.txt","r")
 files_to_countgreen=[x.replace("\n","") for x in images_to_countgreen]
-print "counting pixels of: ", files_to_countgreen
+#print "counting pixels of: ", files_to_countgreen
 
 
 outcount=open(outfolder+"/"+"results_pipeline_greencount.csv","w")
@@ -138,8 +146,14 @@ for filename in files_to_countgreen:
 
 	towrite=[filedate,photoname,traypos,str(count)]
 	listoutcount.append(towrite)
-
-
+	
+	if removeyesno=="removeyes":
+		#### CAREFUL HERE, REMOVING FILES! ###
+		call("rm "+filename ,shell=True,cwd=outfolder_cropped)
+		######################################
+	if removeyesno=="removeno":
+		pass
+	
 
 # print listoutcount
 

@@ -1,9 +1,6 @@
-#### PIPELINE FOR IMAGE ANALYSIS OF ARABIDOPSIS ROSETES  ####
+## PIPELINE CHUNK FOR SEGMENTATION AND CROPPING OF TRAYS  ####
 
-# these need to be installed ... in mac easy with brew ... or pip ....
 
-# import script_image_processing
-# import moi
 
 from module_image_processing import *
 from moi import *
@@ -11,16 +8,35 @@ import sys
 
 # 1 ## Read image
 
-filename=sys.argv[1]
+fil=sys.argv[1]
+
 newname=sys.argv[2]
 
-im=readcolimage(filename)
+#im=readcolimage(filename)
 # type(im)
 # height, width, channels = im.shape
 # print height, width, channels
 
 
-# 2 ## get the index of pot positions
+# 2 ## Segment
+
+img = readcolimage(fil)
+
+maskedhsv_denoised=maskhsvdenoise(img)
+im=maskedhsv_denoised
+#print "segmented image: ", fil
+
+#nameout =outname +"_segmented"
+#cv2.imwrite(nameout+".jpeg",maskedhsv_denoised)
+#print "saved image ",nameout+".jpeg"
+#saveimage(name=nameout,image=maskedhsv_denoised)
+
+# maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
+# ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) ### SO FIRST THE NORMAL, THEN I CAN TRY THIS
+
+
+
+# 3 ## get the index of pot positions
 
 fileindex="index_pots_pertray.tsv"
 # print fileindex
