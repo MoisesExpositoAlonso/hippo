@@ -36,7 +36,7 @@ workingfolder=os.getcwd()
 ############################## WORK WITH JPG FILES #############################
 ### Segment and save image and
 
-command="find " +infolder+"/"+ "*.JPG > images_to_analyze.txt"
+command="ll " +infolder+"/"+ "*.JPG > images_to_analyze.txt"
 call(command,shell=True)
 
 images_to_analyze=open(infolder+"/"+"images_to_analyze.txt","r")
