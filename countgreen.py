@@ -9,16 +9,17 @@ from subprocess import *
 
 ############################## FOLDER TO WORK #############################
 
-outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
+#outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
+#call("mkdir cropped",shell=True,cwd=outfolder)
+#outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
+#infolder="/Users/moisesexpositoalonso/image1001g"
+
+outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
 call("mkdir cropped",shell=True,cwd=outfolder)
-outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
-infolder="/Users/moisesexpositoalonso/image1001g"
-
-# outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
-# call("mkdir cropped",shell=True,cwd=outfolder)
-# outfolder_cropped="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp/cropped"
-# infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/scripts"
-
+outfolder_cropped="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp/cropped"
+#infolder="/ebio/abt6_projects9/ath_1001G_image_pheno"
+#infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/script"
+infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/data/greenhouse_drought_experiment/alljpg"
 
 # outfolder=sys.argv[1]
 # outfolder_cropped=sys.argv[1]
@@ -36,12 +37,10 @@ workingfolder=os.getcwd()
 ############################## WORK WITH JPG FILES #############################
 ### Segment and save image and
 
-command="find " +infolder+"/"+ "*.JPG > images_to_analyze.txt"
-call(command,shell=True)
+command="find "  +infolder+"/"+ "*.JPG > images_to_analyze.txt"
+call(command,shell=True,cwd=infolder)
 
 images_to_analyze=open(infolder+"/"+"images_to_analyze.txt","r")
-filesimage=[x.replace("\n","") for x in images_to_analyze]
-#print filesimage
 
 ### Read the image 
 
@@ -58,7 +57,7 @@ for fil in filesimage:
 
 	mytime=time.ctime(os.path.getctime(fil))
 	mytime=mytime.split(" ")
-	listposition=[1,2,4]
+	listposition=[1,3,5]
 	finaltime=[x[1] for x in enumerate(mytime) if x[0] in listposition]
 	timestring=finaltime[2]+"-"+finaltime[0]+"-"+finaltime[1]
 #	print timestring
@@ -94,8 +93,9 @@ for fil in filesimage:
 
 	counter=counter+1
 	
-	if counter == 20:
+	if counter == 5:
 		p.wait()
+		counter=0
 	else:
 		pass
 
@@ -106,7 +106,7 @@ p.wait()
 ############################## analize croped images #############################
  
 
-command="find " +outfolder_cropped+"/"+ "*.jpeg > images_to_countgreen.txt"
+command="find  " +outfolder_cropped+"/"+ "*.jpeg > images_to_countgreen.txt"
 call(command,shell=True,cwd=outfolder_cropped)
 
 images_to_countgreen=open(outfolder_cropped+"/"+"images_to_countgreen.txt","r")
