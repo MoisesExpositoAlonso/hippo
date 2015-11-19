@@ -32,7 +32,7 @@ def rgb2hsv(image):
  hsv_img = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
  return (hsv_img)
 
-def rgb2gray(image):
+def rgb2grey(image):
  grayimg = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
  return (grayimg)
 
