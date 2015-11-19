@@ -13,8 +13,9 @@ fil=sys.argv[1]
 # example
 # fil="/Users/moisesexpositoalonso/image1001g/P1000363.JPG"
 #fil="/Users/moisesexpositoalonso/image1001g/P1000544.JPG"
+outfolder=sys.argv[2]
 
-outfolder_cropped=sys.argv[2]
+
 
 photoname=fil.split(".")[0].split("/")[-1]
 
@@ -44,7 +45,7 @@ img = readcolimage(fil)
 maskedhsv_denoised=maskhsvdenoise(img)
 im=maskedhsv_denoised
 #print "segmented image: ", fil
-saveimagejpeg(image=im, name=photoname+"_green")
+saveimagejpeg(image=im, name=outfolder+"/segmented/"+photoname+"_green")
 
 
 # maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
@@ -67,7 +68,7 @@ columns=[1,2,3,4,5,6,7,8]
 
 # 3 ## crop and save
 
-csvname=outfolder_cropped+"/"+timestring+"_"+photoname+"_results_greencount.csv"
+csvname=outfolder+"/results/"+timestring+"_"+photoname+"_results_greencount.csv"
 print csvname
 
 outcount=open(csvname,"w")
