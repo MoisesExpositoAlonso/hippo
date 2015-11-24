@@ -14,6 +14,13 @@ import sys
 filename=sys.argv[1]
 newname=sys.argv[2]
 
+try:
+	outfolder=sys.argv[3]
+except IndexError:
+	outfolder=""
+
+
+
 im=readcolimage(filename)
 # type(im)
 # height, width, channels = im.shape
@@ -41,7 +48,7 @@ for r in rows:
  for c in columns:
   # if str(r)+str(c) any 
   # print str(r)+str(c)
-  nameout =newname +"_" +str(r)+str(c)
+  nameout =outfolder+newname +"_" +str(r)+str(c)
   for t in table:
    if "row" in t:
     continue
