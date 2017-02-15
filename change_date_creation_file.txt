@@ -1,2 +1,0 @@
- -t $(date -jf %FT%T 1999-12-31T23:59:59 +%Y%m%d%H%M%S) file.txt
-
