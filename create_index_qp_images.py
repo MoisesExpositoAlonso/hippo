@@ -22,6 +22,7 @@ filesimage=[x.replace("\n","") for x in images_to_analyze]
 counterimage=1
 
 index_images=[]
+print('generating the index of images and dates')
 for fil in filesimage:
 	(mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(fil)
 #print "last modified: %s" % time.ctime(mtime)

@@ -14,28 +14,18 @@ print "time start process: ", now1
 
 ############################## FOLDER TO WORK #############################
 
-
-#outfolder="/Users/moisesexpositoalonso/image1001g/tmp"
-#call("mkdir cropped",shell=True,cwd=outfolder)
-#outfolder_cropped="/Users/moisesexpositoalonso/image1001g/tmp/cropped"
-#infolder="/Users/moisesexpositoalonso/image1001g"
-
-# outfolder="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp"
-# outfolder_cropped="/ebio/abt6_projects9/ath_1001G_image_pheno/tmp/cropped"
-# infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/data/greenhouse_drought_experiment/alljpg"
-#infolder="/ebio/abt6_projects9/ath_1001G_image_pheno/toy"
+try:
+	infolder=sys.argv[1]
+except IndexError:
+	infolder=os.getcwd()
 
 
-# outfolder_cropped=sys.argv[1]
-
-infolder=sys.argv[1]
 try:
 	outfolder=sys.argv[2]
 except IndexError:
 	outfolder=infolder
 
-# tmpfolder=outfolder+"/segmented/"
-# tmpfoldercount=outfolder+"/segmented_cropped/"
+
 # removeyesno=sys.argv[1]
 
 ### Create output files
@@ -46,6 +36,10 @@ call("mkdir results",shell=True,cwd=outfolder)
 
 ########################### index of JPG files and qp num #######
 ## open index 
+print("create index images")
+command="python create_index_qp_images.py " + infolder
+call(command,shell=True)
+
 index=open(infolder+"/"+"index_images.txt","r")
 index=[x.replace("\n","").split(",") for x in index]
 keys=[x[0].split("/")[-1].split(".")[0] for x in index]
@@ -59,13 +53,14 @@ if not indexdic:
 	print "Something went wrong, no correct index !!!"
 else:
 	print "index of images and qp numbers generated"
-
+print(indexdic)
 
 ############################## WORK WITH JPG FILES #############################
+print("find images to analyse")
 ### Segment and save image and
 # find images to analize
-command="find " +infolder+"/"+ "*.JPG > images_to_analyze.txt"
-call(command,shell=True, cwd=infolder)
+#command="find " +infolder+"/"+ "*.JPG > images_to_analyze.txt"
+#call(command,shell=True, cwd=infolder)
 # read list
 images_to_analyze=open(infolder+"/"+"images_to_analyze.txt","r")
 filesimage=[x.replace("\n","") for x in images_to_analyze]

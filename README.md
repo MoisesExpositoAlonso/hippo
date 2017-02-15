@@ -16,3 +16,7 @@ Number of images is 49trays * 40pots * 20timepictures = 39200 pictures to analyz
 #### segment all images
 Append in to a single file with photo number, date and location
 
+#### NOTE
+Problem 1 : Different applications use different scales for HSV. For example gimp uses H = 0-360, S = 0-100 and V = 0-100. But OpenCV uses  H: 0 - 180, S: 0 - 255, V: 0 - 255. Here i got a hue value of 22 in gimp. So I took half of it, 11, and defined range for that. ie (5,50,50) - (15,255,255).
+
+Problem 2: And also, OpenCV uses BGR format, not RGB. So change your code which converts RGB to HSV as follows:cv.CvtColor(frame, frameHSV, cv.CV_BGR2HSV)
