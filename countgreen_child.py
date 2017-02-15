@@ -20,6 +20,7 @@ qpnum=sys.argv[1]
 photoname=fil.split(".")[0].split("/")[-1]
 
 # 2 ## File info
+print('getting file information...')
 (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(fil)
 #print "last modified: %s" % time.ctime(mtime)
 mytime=time.ctime(mtime)
@@ -39,20 +40,22 @@ timestring="2015"+"-"+mytime[1]+"-"+mytime[2]
 
 
 # 3 ## Segment
+print('segmenting...')
 
 img = readcolimage(fil)
 
 maskedhsv_denoised=maskhsvdenoise(img)
 im=maskedhsv_denoised
-#print "segmented image: ", fil
-# saveimagejpeg(image=im, name=outfolder+"/segmented/"+photoname+"_green")
+print "segmented image: ", fil
+saveimagejpeg(image=im, name=outfolder+"/segmented/"+photoname+"_green")
+#saveimagejpeg(image=im, name="trial")
 
 
 # maskedhsv_denoised_binary = cv2.medianBlur(rgb2hsv(maskedhsv_denoised)[:,:,2],5) 
 # ret,th1 = cv2.threshold(maskedhsv_denoised_binary,127,255,cv2.THRESH_BINARY) ### SO FIRST THE NORMAL, THEN I CAN TRY THIS
 
 # 3 ## get the index of pot positions
-
+print('cropping image...')
 fileindex="index_pots_pertray.tsv"
 # print fileindex
 # indexpots=open(fileindex,"r")

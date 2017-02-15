@@ -98,10 +98,10 @@ for fil in filesimage:
 	p = Popen(cmd, shell=True, stdout=PIPE,stderr=PIPE)
 
 # check for errors. problem is that you have to wait until it finishes .. so no parallel
-#	out, err = p.communicate()	
-#	if err:
-#		print "standard error of subprocess:"
-#		print err
+	out, err = p.communicate()	
+	if err:
+		print "standard error of subprocess:"
+		print err
 
 # set a limit to the paralelisation
 	counter=counter+1
